@@ -6,6 +6,7 @@ interface PageSEOProps {
   description: string;
   keywords?: string;
   ogImage?: string;
+  canonicalPath?: string;
 }
 
 const BASE_URL = 'https://botswanaandfriends.com';

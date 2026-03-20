@@ -255,9 +255,9 @@ export type TranslationKey = keyof typeof t;
 export function tr(key: TranslationKey, lang: BaFitDLang, replacements?: Record<string, string | number>): string {
   const val = t[key]?.[lang] ?? t[key]?.['en'] ?? key;
   if (!replacements) return val;
-  return Object.entries(replacements).reduce(
+  return Object.entries(replacements).reduce<string>(
     (str, [k, v]) => str.replace(`{${k}}`, String(v)),
-    val
+    val as string
   );
 }
 

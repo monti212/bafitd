@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Renderer, Camera, Geometry, Program, Mesh } from 'ogl';
+import { Renderer, Camera, Geometry, Program, Mesh, type OGLRenderingContext } from 'ogl';
 
 import './Particles.css';
 
@@ -150,7 +150,7 @@ const Particles: React.FC<ParticlesProps> = ({
       return;
     }
 
-    let initTimer: NodeJS.Timeout;
+    let initTimer: ReturnType<typeof setTimeout>;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -194,7 +194,7 @@ const Particles: React.FC<ParticlesProps> = ({
     }
 
     let renderer: Renderer | null = null;
-    let gl: WebGLRenderingContext | null = null;
+    let gl: OGLRenderingContext | null = null;
     let animationFrameId: number | null = null;
     let canvas: HTMLCanvasElement | null = null;
     let mounted = true;
