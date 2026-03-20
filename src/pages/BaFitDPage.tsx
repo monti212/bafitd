@@ -90,9 +90,9 @@ function GlassCard({ children, className = '', delay = 0 }: { children: React.Re
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay }}
       viewport={{ once: true }}
-      className={`relative bg-white/80 backdrop-blur-xl rounded-2xl border border-teal/15 shadow-lg overflow-hidden ${className}`}
+      className={`relative bg-white/90 backdrop-blur-xl rounded-2xl border border-teal/25 shadow-xl shadow-teal/5 overflow-hidden ${className}`}
     >
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-teal via-accent-orange to-teal" />
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-teal" />
       {children}
     </motion.div>
   );
@@ -112,8 +112,8 @@ function SelectionCard({
       className={`
         relative min-h-[56px] px-4 py-3 rounded-xl border-2 text-left transition-all duration-200 w-full
         ${selected
-          ? 'border-teal bg-gradient-to-br from-teal/10 to-accent-orange/5 shadow-md shadow-teal/10'
-          : 'border-gray-200 bg-white/70 hover:border-teal/40 hover:shadow-sm'
+          ? 'border-teal bg-teal/8 shadow-md shadow-teal/10'
+          : 'border-gray-300 bg-sand-100 hover:border-teal hover:bg-teal/5 hover:shadow-sm'
         } ${className}
       `}
     >
@@ -171,9 +171,9 @@ function FormField({
   );
 }
 
-const inputClass = 'w-full min-h-[56px] px-5 py-3.5 text-base rounded-xl border-2 border-gray-200 bg-white text-deep-navy placeholder-gray-400 focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all duration-200';
-const textareaClass = 'w-full min-h-[100px] px-5 py-3.5 text-base rounded-xl border-2 border-gray-200 bg-white text-deep-navy placeholder-gray-400 focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all duration-200 resize-none';
-const selectClass = 'w-full min-h-[56px] px-5 py-3.5 text-base rounded-xl border-2 border-gray-200 bg-white text-deep-navy focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all duration-200 appearance-none cursor-pointer';
+const inputClass = 'w-full min-h-[56px] px-5 py-3.5 text-base rounded-xl border-2 border-gray-300 bg-sand-50 text-deep-navy placeholder-gray-400 focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all duration-200';
+const textareaClass = 'w-full min-h-[100px] px-5 py-3.5 text-base rounded-xl border-2 border-gray-300 bg-sand-50 text-deep-navy placeholder-gray-400 focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all duration-200 resize-none';
+const selectClass = 'w-full min-h-[56px] px-5 py-3.5 text-base rounded-xl border-2 border-gray-300 bg-sand-50 text-deep-navy focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all duration-200 appearance-none cursor-pointer';
 
 /* ============================================================================
    CONFETTI EFFECT
@@ -472,7 +472,7 @@ const BaFitDPage: React.FC = () => {
                 onClick={startRegistration}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="px-4 sm:px-5 py-2 rounded-xl bg-gradient-to-r from-teal to-accent-orange text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all min-h-[40px]"
+                className="px-4 sm:px-5 py-2 rounded-xl btn-gradient text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all min-h-[40px]"
               >
                 {T('registerNow')}
               </motion.button>
@@ -494,10 +494,10 @@ const BaFitDPage: React.FC = () => {
             <Suspense fallback={<div />}>
               <Particles
                 particleColors={['#0096B3', '#00AEEF', '#FF6A00']}
-                particleCount={isMobile ? 60 : 250}
+                particleCount={isMobile ? 100 : 400}
                 particleSpread={10}
                 speed={0.08}
-                particleBaseSize={100}
+                particleBaseSize={130}
                 moveParticlesOnHover={!isMobile}
                 alphaParticles={false}
                 disableRotation={false}
@@ -506,13 +506,16 @@ const BaFitDPage: React.FC = () => {
           </ParticlesErrorBoundary>
         </div>
 
+        {/* Radial glow — gives the hero depth */}
+        <div className="absolute inset-0 z-[1] pointer-events-none hero-glow" />
+
         <div className="relative z-10 container mx-auto px-4 sm:px-6 text-center max-w-4xl py-20">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-[1.1]">
+            <h1 className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 leading-[1.05]">
               <span className="text-deep-navy">Ba</span>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-accent-orange">FitD</span>
             </h1>
@@ -583,7 +586,7 @@ const BaFitDPage: React.FC = () => {
               onClick={startRegistration}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-teal to-accent-orange text-white font-bold text-lg shadow-xl hover:shadow-2xl transition-all min-h-[56px]"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl btn-gradient text-white font-bold text-lg shadow-xl hover:shadow-2xl transition-all min-h-[56px]"
             >
               {T('registerCta')}
               <ChevronDown className="w-5 h-5" />
@@ -597,7 +600,7 @@ const BaFitDPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 max-w-3xl">
           <GlassCard className="p-8 sm:p-10 lg:p-12" delay={0}>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal to-accent-orange flex items-center justify-center text-white shadow-lg flex-shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-teal flex items-center justify-center text-white shadow-lg flex-shrink-0">
                 <BookOpen className="w-6 h-6" />
               </div>
               <div>
@@ -621,8 +624,11 @@ const BaFitDPage: React.FC = () => {
       </section>
 
       {/* ===================== INITIATIVE SECTION ===================== */}
-      <section className="py-16 sm:py-20 bg-gradient-to-b from-sand-100 to-white">
+      <section className="py-16 sm:py-20 bg-teal/[0.05] border-y border-teal/10">
         <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+          <h2 className="font-headline text-3xl sm:text-4xl font-bold text-deep-navy text-center mb-10">
+            What is <span className="text-teal">BaFitD</span>?
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {([
               { key: 'whatIs' as const, icon: <ClipboardList className="w-7 h-7" /> },
@@ -631,7 +637,7 @@ const BaFitDPage: React.FC = () => {
               { key: 'diaspora' as const, icon: <Globe className="w-7 h-7" /> },
             ]).map((card, i) => (
               <GlassCard key={i} delay={i * 0.1} className="p-6 sm:p-7">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal to-accent-orange flex items-center justify-center text-white mb-5 shadow-lg">
+                <div className="w-14 h-14 rounded-2xl bg-teal flex items-center justify-center text-white mb-5 shadow-lg">
                   {card.icon}
                 </div>
                 <h3 className="font-headline text-lg font-bold text-deep-navy mb-2">
@@ -647,8 +653,14 @@ const BaFitDPage: React.FC = () => {
       </section>
 
       {/* ===================== REGISTRATION WIZARD ===================== */}
-      <section ref={wizardRef} id="register" className="py-16 sm:py-20 bg-gradient-to-b from-white to-sand-100">
+      <section ref={wizardRef} id="register" className="py-16 sm:py-24 bg-gradient-to-b from-white to-sand-100">
         <div className="container mx-auto px-4 sm:px-6 max-w-2xl">
+          <div className="text-center mb-10">
+            <h2 className="font-headline text-3xl sm:text-4xl font-bold text-deep-navy mb-2">
+              Register Your Skills
+            </h2>
+            <p className="text-deep-navy/50 text-base">Give back to Botswana — one skill at a time.</p>
+          </div>
           <AnimatePresence mode="wait">
             {submitResult?.success ? (
               /* ==================== SUCCESS SCREEN ==================== */
@@ -664,7 +676,7 @@ const BaFitDPage: React.FC = () => {
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
-                    className="w-20 h-20 rounded-full bg-gradient-to-r from-teal to-accent-orange flex items-center justify-center mx-auto mb-6"
+                    className="w-20 h-20 rounded-full bg-teal flex items-center justify-center mx-auto mb-6"
                   >
                     <Check className="w-10 h-10 text-white" />
                   </motion.div>
@@ -717,7 +729,7 @@ const BaFitDPage: React.FC = () => {
                     onClick={startRegistration}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-teal to-accent-orange text-white font-bold text-lg shadow-xl min-h-[56px]"
+                    className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl btn-gradient text-white font-bold text-lg shadow-xl min-h-[56px]"
                   >
                     {T('registerNow')}
                     <ChevronRight className="w-5 h-5" />
@@ -745,7 +757,7 @@ const BaFitDPage: React.FC = () => {
                       onClick={pickFreeform}
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
-                      className="flex flex-col items-center gap-4 p-6 rounded-2xl border-2 border-gray-200 bg-white/70 hover:border-teal/50 hover:shadow-lg transition-all text-center"
+                      className="flex flex-col items-center gap-4 p-6 rounded-2xl border-2 border-gray-300 bg-sand-100 hover:border-teal hover:bg-teal/5 hover:shadow-lg transition-all text-center"
                     >
                       <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal/15 to-accent-orange/10 flex items-center justify-center text-teal">
                         <FileText className="w-8 h-8" />
@@ -760,7 +772,7 @@ const BaFitDPage: React.FC = () => {
                       onClick={pickForm}
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
-                      className="flex flex-col items-center gap-4 p-6 rounded-2xl border-2 border-gray-200 bg-white/70 hover:border-teal/50 hover:shadow-lg transition-all text-center"
+                      className="flex flex-col items-center gap-4 p-6 rounded-2xl border-2 border-gray-300 bg-sand-100 hover:border-teal hover:bg-teal/5 hover:shadow-lg transition-all text-center"
                     >
                       <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal/15 to-accent-orange/10 flex items-center justify-center text-teal">
                         <ListChecks className="w-8 h-8" />
@@ -824,7 +836,7 @@ const BaFitDPage: React.FC = () => {
                       disabled={isSubmitting}
                       whileHover={!isSubmitting ? { scale: 1.03 } : {}}
                       whileTap={!isSubmitting ? { scale: 0.97 } : {}}
-                      className={`inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-teal to-accent-orange text-white font-bold text-lg shadow-xl min-h-[56px] transition-all ${
+                      className={`inline-flex items-center gap-2 px-8 py-4 rounded-xl btn-gradient text-white font-bold text-lg shadow-xl min-h-[56px] transition-all ${
                         isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-2xl'
                       }`}
                     >
@@ -865,7 +877,7 @@ const BaFitDPage: React.FC = () => {
                   </div>
                   <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
                     <motion.div
-                      className="h-full rounded-full bg-gradient-to-r from-teal to-accent-orange"
+                      className="h-full rounded-full bg-teal"
                       initial={false}
                       animate={{ width: `${(currentStep / TOTAL_STEPS) * 100}%` }}
                       transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -1154,7 +1166,7 @@ const BaFitDPage: React.FC = () => {
                                       updateField('preferred_days', next);
                                     }}
                                     className={`min-h-[48px] min-w-[48px] px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                                      sel ? 'bg-teal text-white shadow-md' : 'bg-gray-100 text-deep-navy/70 hover:bg-gray-200'
+                                      sel ? 'bg-teal text-white shadow-md' : 'bg-sand-200 border border-gray-300 text-deep-navy/80 hover:border-teal hover:bg-teal/5'
                                     }`}
                                   >
                                     {T(dayKey)}
@@ -1199,7 +1211,7 @@ const BaFitDPage: React.FC = () => {
                                       updateField('languages_spoken', next);
                                     }}
                                     className={`min-h-[44px] px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                                      sel ? 'bg-teal text-white shadow-md' : 'bg-gray-100 text-deep-navy/70 hover:bg-gray-200'
+                                      sel ? 'bg-teal text-white shadow-md' : 'bg-sand-200 border border-gray-300 text-deep-navy/80 hover:border-teal hover:bg-teal/5'
                                     }`}
                                   >
                                     {l}
@@ -1320,7 +1332,7 @@ const BaFitDPage: React.FC = () => {
                         disabled={isSubmitting}
                         whileHover={!isSubmitting ? { scale: 1.03 } : {}}
                         whileTap={!isSubmitting ? { scale: 0.97 } : {}}
-                        className={`inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-teal to-accent-orange text-white font-bold text-lg shadow-xl min-h-[56px] transition-all ${
+                        className={`inline-flex items-center gap-2 px-8 py-4 rounded-xl btn-gradient text-white font-bold text-lg shadow-xl min-h-[56px] transition-all ${
                           isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-2xl'
                         }`}
                       >
@@ -1345,7 +1357,7 @@ const BaFitDPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ===================== FAQ SECTION ===================== */}
+      {/* ==================== FAQ SECTION ===================== */}
       <section className="py-16 sm:py-20 bg-gradient-to-b from-sand-100 to-white">
         <div className="container mx-auto px-4 sm:px-6 max-w-3xl">
           <motion.h2
@@ -1390,7 +1402,7 @@ function FAQAccordion({ lang }: { lang: BaFitDLang }) {
           viewport={{ once: true }}
           className="relative bg-white/95 backdrop-blur-xl rounded-2xl border border-teal/15 shadow-lg overflow-hidden"
         >
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-teal to-accent-orange" />
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-teal" />
           <button
             onClick={() => setOpenIdx(openIdx === i ? null : i)}
             className="w-full flex items-center justify-between p-5 sm:p-6 text-left min-h-[56px]"

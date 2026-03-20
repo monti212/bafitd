@@ -1,16 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'DM Sans', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #0a0a0a;
+  color-scheme: light;
+  color: #002F4B;
+  background-color: #F7F5F2;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Keyframes ── */
+
+@keyframes shimmer-sweep {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0  0   rgba(0, 150, 179, 0.15); }
+  50%       { box-shadow: 0 0 0 10px rgba(0, 150, 179, 0); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Custom scrollbar ── */
+
+/* ── Button gradient (oklch interpolation — avoids muddy sRGB midpoint) ── */
+
+@layer utilities {
+  .btn-gradient {
+    background: linear-gradient(to right in oklch, #0096B3, #FF6A00);
+  }
+  .btn-gradient:hover {
+    background: linear-gradient(to right in oklch, #007a91, #cc5500);
+  }
+  .icon-gradient {
+    background: linear-gradient(135deg in oklch, #0096B3, #FF6A00);
+  }
+  .hero-glow {
+    background: radial-gradient(ellipse 75% 55% at 50% 50%, rgba(0, 150, 179, 0.08) 0%, transparent 70%);
+  }
+}
+
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: #F7F5F2; }
+::-webkit-scrollbar-thumb { background: #0096B3; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #007a91; }

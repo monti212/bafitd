@@ -16,7 +16,7 @@ const Logo: React.FC<LogoProps> = ({ className = 'h-8' }) => {
           (e.currentTarget as HTMLImageElement).style.display = 'none';
         }}
       />
-      <span className="font-bold text-white text-xl tracking-tight">BaFitD</span>
+      <span className="font-bold text-deep-navy text-xl tracking-tight">BaFitD</span>
     </div>
   );
 };
