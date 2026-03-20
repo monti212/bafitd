@@ -25,3 +25,6 @@ dist/
 *.sln
 *.sw?
 .DS_Store
+
+# Admin setup — contains credentials, delete after running
+scripts/setup-admin.mjs
