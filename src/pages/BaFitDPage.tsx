@@ -7,6 +7,7 @@ import {
   ArrowLeft, Check, MessageCircle, Users, Globe, Sparkles,
   ClipboardList, MapPin, Calendar, Phone, Mail, User, Briefcase,
   Minus, Plus, Pencil, Lock, ShieldCheck, BookOpen, FileText, ListChecks,
+  Facebook, Instagram, Share2,
 } from 'lucide-react';
 import Logo from '../components/Logo';
 import NewFooter from '../components/NewFooter';
@@ -345,7 +346,7 @@ const BaFitDPage: React.FC = () => {
     });
     if (result.success) {
       setSubmitResult({ success: true, volunteerNumber: (stats?.total_volunteers ?? 0) + 1 });
-      formData.full_name = freeformData.full_name; // for the success screen name
+      setFormData(prev => ({ ...prev, full_name: freeformData.full_name })); // for the success screen name
       getBaFitDStats().then(res => { if (res.success && res.stats) setStats(res.stats); });
     } else if (result.error === 'duplicate') {
       setErrors({ submit: T('errorDuplicate') });
@@ -409,9 +410,7 @@ const BaFitDPage: React.FC = () => {
     if (isSubmitting) return;
     setIsSubmitting(true);
     setErrors({});
-    formData.preferred_language = lang;
-
-    const result = await submitVolunteer(formData);
+    const result = await submitVolunteer({ ...formData, preferred_language: lang });
     if (result.success) {
       setSubmitResult({ success: true, volunteerNumber: (stats?.total_volunteers ?? 0) + 1 });
       // Refresh stats
@@ -655,12 +654,6 @@ const BaFitDPage: React.FC = () => {
       {/* ===================== REGISTRATION WIZARD ===================== */}
       <section ref={wizardRef} id="register" className="py-16 sm:py-24 bg-gradient-to-b from-white to-sand-100">
         <div className="container mx-auto px-4 sm:px-6 max-w-2xl">
-          <div className="text-center mb-10">
-            <h2 className="font-headline text-3xl sm:text-4xl font-bold text-deep-navy mb-2">
-              Register Your Skills
-            </h2>
-            <p className="text-deep-navy/50 text-base">Give back to Botswana — one skill at a time.</p>
-          </div>
           <AnimatePresence mode="wait">
             {submitResult?.success ? (
               /* ==================== SUCCESS SCREEN ==================== */
@@ -686,7 +679,8 @@ const BaFitDPage: React.FC = () => {
                   <p className="text-lg text-deep-navy/70 mb-8">
                     {T('volunteerNumber', { number: submitResult.volunteerNumber ?? 0 })}
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <p className="text-deep-navy/60 font-medium mb-3">{T('shareMessage')}</p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
                     <motion.a
                       href={`https://wa.me/?text=${encodeURIComponent(`I just registered as a BaFitD volunteer! Join me in giving back to Botswana: ${window.location.origin}/BaFitD`)}`}
                       target="_blank"
@@ -698,6 +692,30 @@ const BaFitDPage: React.FC = () => {
                       <MessageCircle className="w-5 h-5" />
                       {T('shareWhatsApp')}
                     </motion.a>
+                    <motion.a
+                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}/BaFitD`)}&quote=${encodeURIComponent('I just registered as a BaFitD volunteer! Join me in giving back to Botswana.')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#1877F2] text-white font-semibold min-h-[56px] shadow-lg"
+                    >
+                      <Facebook className="w-5 h-5" />
+                      {T('shareFacebook')}
+                    </motion.a>
+                    <motion.a
+                      href={`https://www.instagram.com/stories/create/?url=${encodeURIComponent(`${window.location.origin}/BaFitD`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] text-white font-semibold min-h-[56px] shadow-lg"
+                    >
+                      <Instagram className="w-5 h-5" />
+                      {T('shareInstagram')}
+                    </motion.a>
+                  </div>
+                  <div className="mt-4">
                     <motion.button
                       onClick={() => navigate('/')}
                       whileHover={{ scale: 1.03 }}

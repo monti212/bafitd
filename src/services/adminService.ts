@@ -182,6 +182,12 @@ export async function computeSimilarities(): Promise<{ pairs_computed: number; g
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-export function getVolunteersByIds(ids: string[]): Promise<{ data: Volunteer[]; count: number }> {
-  return getVolunteers(0, 500, {});  // caller filters by id client-side for simplicity
+export async function getVolunteersByIds(ids: string[]): Promise<{ data: Volunteer[]; count: number }> {
+  if (!supabase || ids.length === 0) return { data: [], count: 0 };
+  const { data, error } = await supabase
+    .from('bafitd_volunteers')
+    .select('*')
+    .in('id', ids);
+  if (error) throw new Error(error.message);
+  return { data: (data ?? []) as Volunteer[], count: data?.length ?? 0 };
 }

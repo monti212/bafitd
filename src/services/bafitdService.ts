@@ -1,9 +1,9 @@
 import { supabase } from '../lib/supabase';
-import type { BaFitDFormData, BaFitDVolunteer, BaFitDStats } from '../types/bafitd';
+import type { BaFitDFormData, BaFitDStats } from '../types/bafitd';
 
 export const submitVolunteer = async (
   formData: BaFitDFormData
-): Promise<{ success: boolean; volunteer?: BaFitDVolunteer; error?: string }> => {
+): Promise<{ success: boolean; error?: string }> => {
   try {
     if (!supabase) {
       return { success: false, error: 'Service unavailable. Please try again.' };
@@ -17,6 +17,7 @@ export const submitVolunteer = async (
       age_range: formData.age_range || null,
       languages_spoken: formData.languages_spoken.length > 0 ? formData.languages_spoken : null,
       omang_number: formData.omang_number.trim() || null,
+      passport_number: formData.passport_number.trim() || null,
       preferred_contact: formData.preferred_contact || 'whatsapp',
       city: formData.city.trim(),
       district: formData.district.trim() || null,
@@ -47,11 +48,9 @@ export const submitVolunteer = async (
       referral_source: formData.referral_source || null,
     };
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('bafitd_volunteers')
-      .insert(payload)
-      .select()
-      .single();
+      .insert(payload);
 
     if (error) {
       if (error.message?.includes('duplicate') || error.code === '23505') {
@@ -60,7 +59,7 @@ export const submitVolunteer = async (
       throw new Error(error.message);
     }
 
-    return { success: true, volunteer: data as BaFitDVolunteer };
+    return { success: true };
   } catch (error: any) {
     console.error('[BaFitD] Volunteer registration error:', error);
     return { success: false, error: error.message || 'Registration failed. Please try again.' };

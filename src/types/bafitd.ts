@@ -8,7 +8,7 @@ export type AvailabilityFrequency = 'weekly' | 'biweekly' | 'monthly' | 'flexibl
 export type ServiceMode = 'in_person' | 'virtual' | 'both';
 export type PreferredContact = 'whatsapp' | 'sms' | 'phone_call' | 'email';
 export type StartAvailability = 'immediately' | 'within_1_month' | 'within_3_months' | 'not_sure';
-export type EmployerSupport = 'yes' | 'not_yet' | 'self_employed' | 'retired' | 'not_applicable';
+export type EmployerSupport = 'yes' | 'not_yet' | 'self_employed' | 'retired' | 'not_applicable' | 'not_asked';
 export type VolunteerStatus = 'registered' | 'active' | 'verified' | 'inactive';
 export type ReferralSource = 'social_media' | 'friend' | 'news' | 'employer' | 'other';
 export type BotswanaLanguage = 'english' | 'setswana' | 'kalanga' | 'sekgalagadi' | 'herero' | 'sebirwa' | 'other';
@@ -52,6 +52,8 @@ export interface BaFitDVolunteer {
   pledge_statement: string | null;
   preferred_language: 'en' | 'tn';
   referral_source: ReferralSource | null;
+  freeform_text: string | null;
+  input_mode: 'form' | 'freeform';
   created_at: string;
   updated_at: string;
 }

@@ -212,6 +212,8 @@ const t = {
   volunteerNumber: { en: 'You are volunteer #{number} in the BaFitD Registry', tn: 'O moithaopi wa #{number} mo Rejistara ya BaFitD' },
   shareMessage: { en: 'Tell a friend to register too!', tn: 'Bolelela tsala go ikwadisa le yone!' },
   shareWhatsApp: { en: 'Share on WhatsApp', tn: 'Arogana ka WhatsApp' },
+  shareFacebook: { en: 'Share on Facebook', tn: 'Arogana ka Facebook' },
+  shareInstagram: { en: 'Share on Instagram', tn: 'Arogana ka Instagram' },
   backToHome: { en: 'Back to Home', tn: 'Boela Gae' },
 
   // ===== Navigation =====
