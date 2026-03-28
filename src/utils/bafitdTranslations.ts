@@ -7,8 +7,39 @@ const t = {
   // ===== Page Header & Hero =====
   pageTitle: { en: 'BaFitD — Batswana and Friends in the Diaspora', tn: 'BaFitD — Batswana le Ditsala mo Diasporeng' },
   tagline: { en: 'Botswana gave me so much, now it is time for me to give back', tn: 'O rutilwe ke batho ba Botswana. Jaanong ke nako ya go busa.' },
-  registerCta: { en: 'Register to Give Back', tn: 'Ikwadise go Thusa' },
+  registerCta: { en: 'Register to Join', tn: 'Ikwadise go Tsena' },
   registerNow: { en: 'Register Now', tn: 'Ikwadise Jaanong' },
+
+  heroDescription: { en: 'An online platform for Batswana professionals and Friends of Botswana to grow their individual wealth, give back to the country and secure prosperity for future generations', tn: 'Setsha sa inthanete sa baitseanape ba Batswana le Ditsala tsa Botswana go godisa khumo ya bone, go busa mo nageng le go netefatsa katlego ya ditshika tse di tlang' },
+
+  // ===== "Who Is This For?" Bullets =====
+  bullet1: { en: 'I am a business person looking for investment opportunities that will benefit Botswana or Batswana.', tn: 'Ke mohwebi yo o batlang ditšhono tsa peeletso tse di tla thusang Botswana kgotsa Batswana.' },
+  bullet2: { en: 'I am a professional looking to connect with others to profitably gain from opportunities in Botswana.', tn: 'Ke moitseanape yo o batlang go golagana le ba bangwe go ungwa ke ditšhono mo Botswana.' },
+  bullet3: { en: 'I work for a company with internship opportunities for undergraduate Batswana students.', tn: 'Ke bereka mo khamphaning e e nang le ditšhono tsa go ithuta tiro tsa baithuti ba Batswana.' },
+  bullet4: { en: 'I have specific idea(s) I want to confidentially share with others.', tn: 'Ke na le kakanyo/dikakanyo tse ke batlang go di abelana le ba bangwe ka sephiri.' },
+  bullet5: { en: 'I just want to give back to Botswana.', tn: 'Ke batla fela go busa mo Botswana.' },
+  bullet6: { en: 'I have a product/service I want to promote.', tn: 'Ke na le sesupo/tirelo e ke batlang go e phasalatsa.' },
+
+  // ===== Intent card CTA prompts =====
+  heroBulletCta: { en: 'This is me — Register', tn: 'Ke nna — Ikwadise' },
+  heroJoinPrompt: { en: 'What brings you to BaFitD?', tn: 'Go go tlisang kwa BaFitD?' },
+  heroJoinPromptSub: { en: 'Select the option that best describes you, or register directly below.', tn: 'Tlhopha kgetsi e e go tlhalosetsa sentle, kgotsa ikwadise go lebisa.' },
+
+  // ===== Intent-specific context in registration forms =====
+  intentNote: { en: 'You\'re registering as:', tn: 'O ikwadisa jaaka:' },
+  intentLabelBusiness: { en: 'A business person seeking investment opportunities', tn: 'Mohwebi yo o batlang ditšhono tsa peeletso' },
+  intentLabelProfessional: { en: 'A professional seeking network opportunities', tn: 'Moitseanape yo o batlang ditšhono tsa kgolagano' },
+  intentLabelInternship: { en: 'An employer with internship opportunities', tn: 'Mohiri yo o nang le ditšhono tsa go ithuta tiro' },
+  intentLabelIdea: { en: 'Someone with ideas to share confidentially', tn: 'Motho yo o nang le dikakanyo tsa sephiri' },
+  intentLabelGiveback: { en: 'Someone who wants to give back to Botswana', tn: 'Motho yo o batlang go busa mo Botswana' },
+  intentLabelProduct: { en: 'Someone with a product or service to promote', tn: 'Motho yo o phasalatsa sesupo kgotsa tirelo' },
+
+  intentSubtitleBusiness: { en: 'Tell us about your business background and the investment opportunities in Botswana you\'d like to explore. Include your sector, experience, and what you\'re looking for.', tn: 'Re bolelele ka kgwebo ya gago le ditšhono tsa peeletso mo Botswana tse o batlang go di lebelela. Tshwarelela sekthoro, maitemogelo le seo o se batlang.' },
+  intentSubtitleProfessional: { en: 'Tell us about your profession and the opportunities in Botswana you\'d like to connect with others to pursue. Include your skills, where you\'re based, and what you\'re hoping to find.', tn: 'Re bolelele ka tiro ya gago le ditšhono mo Botswana tse o batlang go di phetoha le ba bangwe. Tshwarelela bokgoni jwa gago, o nna kae, le seo o se solofetsang go se bona.' },
+  intentSubtitleInternship: { en: 'Tell us about your company, your sector, and the internship opportunities available for undergraduate Batswana students — including location, duration, and any requirements.', tn: 'Re bolelele ka khamphani ya gago, sekthoro le ditšhono tsa go ithuta tiro tse di teng tsa baithuti ba Batswana — go akaretsa lefelo, paka le ditlhokego.' },
+  intentSubtitleIdea: { en: 'Your submission is kept strictly confidential. Share your idea(s) — describe what you\'d like to propose or explore with our network. Be as specific or as broad as you like.', tn: 'Kitsiso ya gago e tsholelwa ka bosephiri. Abelana le dikakanyo tsa gago — tlhalosa seo o batlang go se tlhagisa kgotsa go se lebelela le dikgolagano tsa rona.' },
+  intentSubtitleGiveback: { en: 'Tell us who you are, where you live, what skills or experience you have, and how you would like to give back to Botswana. Every contribution counts.', tn: 'Re bolelele gore o mang, o nna kae, bokgoni le maitemogelo a gago, le gore o batla go busa mo Botswana jang. Mmarô mongwe le mongwe o batlega.' },
+  intentSubtitleProduct: { en: 'Tell us about your product or service — what it is, what problem it solves, and how it could benefit Batswana or Botswana. We\'ll help you get it in front of the right people.', tn: 'Re bolelele ka sesupo kgotsa tirelo ya gago — ke eng, go rarabolola bothata jang, le gore e ka thusa jang Batswana kgotsa Botswana. Re tla go thusa go e bontsha batho ba maleba.' },
 
   // ===== Input Mode Chooser =====
   chooseInputMode: { en: 'How would you like to register?', tn: 'O batla go ikwadisa jang?' },
@@ -25,7 +56,13 @@ const t = {
   freeformNameLabel: { en: 'Your Full Name', tn: 'Leina la Gago le le Feletseng' },
   freeformPhoneLabel: { en: 'Phone Number', tn: 'Nomoro ya Mogala' },
   freeformEmailLabel: { en: 'Email (optional)', tn: 'Imeile (ga e pateletsege)' },
-  freeformEssayLabel: { en: 'Your Story', tn: 'Lenaane la Gago' },
+  freeformEssayLabel: { en: 'Tell us your story and briefly describe what you are looking for? (e.g. business opportunities)', tn: 'Re bolelele ga gago le tlhalosa ka khutshwane seo o se batlang? (sk. ditšhono tsa kgwebo)' },
+  freeformEssayLabelBusiness: { en: 'Tell us your story and briefly describe what you are looking for? (e.g. investment opportunities in Botswana)', tn: 'Re bolelele ga gago le tlhalosa ka khutshwane seo o se batlang? (sk. ditšhono tsa go tshenya madi mo Botswana)' },
+  freeformEssayLabelProfessional: { en: 'Tell us your story and briefly describe what you are looking for? (e.g. professional networks and opportunities in Botswana)', tn: 'Re bolelele ga gago le tlhalosa ka khutshwane seo o se batlang? (sk. mekgatlho ya baporofešenale le ditšhono mo Botswana)' },
+  freeformEssayLabelInternship: { en: 'Tell us your story and briefly describe what you can offer? (e.g. internship placements for Batswana students)', tn: 'Re bolelele ga gago le tlhalosa ka khutshwane seo o ka se neelang? (sk. ditšhono tsa go ithuta mo tirong mo baithuting ba Batswana)' },
+  freeformEssayLabelIdea: { en: 'Tell us your story and briefly describe what you are looking for? (e.g. confidential idea sharing with the network)', tn: 'Re bolelele ga gago le tlhalosa ka khutshwane seo o se batlang? (sk. go abelana dikgopolo ka sephiri le lephata)' },
+  freeformEssayLabelGiveback: { en: 'Tell us your story and briefly describe what you are looking for? (e.g. ways to give back and uplift Botswana)', tn: 'Re bolelele ga gago le tlhalosa ka khutshwane seo o se batlang? (sk. mekgwa ya go busetsa le go gola Botswana)' },
+  freeformEssayLabelProduct: { en: 'Tell us your story and briefly describe what you are looking for? (e.g. promoting your product or service across Botswana networks)', tn: 'Re bolelele ga gago le tlhalosa ka khutshwane seo o se batlang? (sk. go gopotsa setlhwatlhwa kgotsa tirelo ya gago mo mekgatlhong ya Botswana)' },
   freeformSubmit: { en: 'Submit My Registration', tn: 'Romela Kwadiso ya Me' },
   freeformSwitchToForm: { en: 'I prefer the step-by-step form instead', tn: 'Ke batla foromo ya dikgato' },
 
@@ -58,9 +95,18 @@ const t = {
   // ===== Wizard Progress =====
   stepOf: { en: 'Step {current} of {total}', tn: 'Kgato ya {current} mo go {total}' },
 
-  // ===== Step 1: About You =====
-  step1Title: { en: 'About You', tn: 'Fa ga Wena' },
-  step1Subtitle: { en: 'Let\'s start with the basics', tn: 'A re simolole ka tse di botlhokwa' },
+  // ===== Step 1: Tell Us About Yourself =====
+  step1Title: { en: 'Tell Us About Yourself', tn: 'Re Bolelele ka Ga Gago' },
+  step1Subtitle: { en: 'Your personal details, background and skills', tn: 'Tshedimosetso ya gago ya botho, maitemogelo le bokgoni' },
+  step1SubtitleBusiness: { en: 'Your personal details, background and skills — e.g. investment opportunities', tn: 'Tshedimosetso ya gago ya botho, maitemogelo le bokgoni — sk. ditšhono tsa go tshenya madi' },
+  step1SubtitleProfessional: { en: 'Your personal details, background and skills — e.g. professional networks and opportunities', tn: 'Tshedimosetso ya gago ya botho, maitemogelo le bokgoni — sk. mekgatlho ya baporofešenale le ditšhono' },
+  step1SubtitleInternship: { en: 'Your personal details, background and skills — e.g. internship placements you can offer Batswana students', tn: 'Tshedimosetso ya gago ya botho, maitemogelo le bokgoni — sk. ditšhono tsa go ithuta mo tirong tse o ka di neelang baithuti ba Batswana' },
+  step1SubtitleIdea: { en: 'Your personal details, background and skills — e.g. confidential idea sharing', tn: 'Tshedimosetso ya gago ya botho, maitemogelo le bokgoni — sk. go abelana dikgopolo ka sephiri' },
+  step1SubtitleGiveback: { en: 'Your personal details, background and skills — e.g. ways to give back to Botswana', tn: 'Tshedimosetso ya gago ya botho, maitemogelo le bokgoni — sk. mekgwa ya go busetsa mo Botswana' },
+  step1SubtitleProduct: { en: 'Your personal details, background and skills — e.g. promoting your product or service', tn: 'Tshedimosetso ya gago ya botho, maitemogelo le bokgoni — sk. go gopotsa setlhwatlhwa kgotsa tirelo ya gago' },
+  step1SectionPersonal: { en: 'Personal Details', tn: 'Tshedimosetso ya Botho' },
+  step1SectionBackground: { en: 'Your Background', tn: 'Maitemogelo a Gago' },
+  step1SectionSkills: { en: 'Your Skills', tn: 'Bokgoni jwa Gago' },
   fullName: { en: 'Your full name', tn: 'Leina la gago ka botlalo' },
   fullNamePlaceholder: { en: 'e.g. Mpho Kgosana', tn: 'sk. Mpho Kgosana' },
   phone: { en: 'Phone number', tn: 'Nomoro ya mogala' },
@@ -73,9 +119,9 @@ const t = {
   genderPreferNot: { en: 'Prefer not to say', tn: 'Ga ke batle go bua' },
   ageRange: { en: 'Your age range', tn: 'Dingwaga tsa gago' },
 
-  // ===== Step 2: Education =====
-  step2Title: { en: 'Your Education', tn: 'Thuto ya Gago' },
-  step2Subtitle: { en: 'Tell us about your qualifications', tn: 'Re bolelele ka dithuto tsa gago' },
+  // ===== Step 2: Location =====
+  step2Title: { en: 'Which area of Botswana would you like to serve in?', tn: 'Kgaolo efe ya Botswana o ka rata go direla mo go yona?' },
+  step2Subtitle: { en: 'Tell us where you are based and where you\'d like to help', tn: 'Re bolelele gore o nna kae le gore o ka rata go thusa kae' },
   qualificationLevel: { en: 'Highest qualification level', tn: 'Maemo a thuto a a kwa godimo' },
   certificate: { en: 'Certificate', tn: 'Setifikeiti' },
   diploma: { en: 'Diploma', tn: 'Diploma' },
@@ -85,8 +131,8 @@ const t = {
   otherQual: { en: 'Other', tn: 'Tse Dingwe' },
   qualificationName: { en: 'Name of your qualification', tn: 'Leina la thuto ya gago' },
   qualificationNamePlaceholder: { en: 'e.g. Bachelor of Medicine', tn: 'sk. Digiri ya Bongaka' },
-  institution: { en: 'Institution attended', tn: 'Sekolo se o se tsenetseng' },
-  institutionPlaceholder: { en: 'e.g. University of Botswana', tn: 'sk. Yunibesithi ya Botswana' },
+  institution: { en: 'Institution where highest qualification was attained', tn: 'Sekolo se o beileng thuto ya godimo teng' },
+  institutionPlaceholder: { en: 'e.g. University of Cape Town', tn: 'sk. Yunibesithi ya Botswana' },
   graduationYear: { en: 'Year of graduation (optional)', tn: 'Ngwaga o o feditseng (ga go pateletsege)' },
 
   yes: { en: 'Yes', tn: 'Ee' },
@@ -111,8 +157,8 @@ const t = {
   passportOptional: { en: 'Optional — for future verification, you can skip this', tn: 'Ga go pateletsege — ke ya tiiso ya isago, o ka e feta' },
 
   // ===== Step 3: Skills =====
-  step3Title: { en: 'Your Skills', tn: 'Bokgoni jwa Gago' },
-  step3Subtitle: { en: 'What can you offer to your community?', tn: 'O ka thusa sechaba sa gago ka eng?' },
+  step3Title: { en: 'When can you start?', tn: 'O ka simolola leng?' },
+  step3Subtitle: { en: 'Select when you would be ready to begin volunteering', tn: 'Tlhopha fa o ne o ka ithaopa go simolola' },
   skillCategory: { en: 'Your main skill area', tn: 'Lefelo la bokgoni jwa gago' },
   healthcare: { en: 'Healthcare', tn: 'Boitekanelo' },
   engineering: { en: 'Engineering', tn: 'Boenjineri' },
@@ -128,15 +174,15 @@ const t = {
   specialtyPlaceholder: { en: 'e.g. Dentistry, Civil Engineering', tn: 'sk. Bongaka jwa Meno, Boenjineri jwa Dikago' },
   specificServices: { en: 'What specific services can you offer?', tn: 'O ka fana ka ditirelo dife tse di rileng?' },
   specificServicesPlaceholder: { en: 'e.g. I can do dental checkups and extractions at my private clinic', tn: 'sk. Nka tlhatlhoba le go ntsha meno kwa kliniking ya me' },
-  yearsExperience: { en: 'Years of experience', tn: 'Dingwaga tsa maitemogelo' },
+  yearsExperience: { en: 'Years of experience in current profession', tn: 'Dingwaga tsa maitemogelo mo tirong ya jaanong' },
   currentEmployer: { en: 'Current employer (optional)', tn: 'Mohiri wa ga jaana (ga go pateletsege)' },
   currentEmployerPlaceholder: { en: 'e.g. Princess Marina Hospital', tn: 'sk. Sepetlele sa Princess Marina' },
   professionalLicense: { en: 'Professional license number (if applicable)', tn: 'Nomoro ya laesense ya porofešenale (fa e le teng)' },
   professionalLicensePlaceholder: { en: 'e.g. BHPC-12345', tn: 'sk. BHPC-12345' },
 
   // ===== Step 4: Where & When =====
-  step4Title: { en: 'Where & When', tn: 'Kae le Leng' },
-  step4Subtitle: { en: 'Where are you, and where would you like to help?', tn: 'O kae, mme o ka rata go thusa kae?' },
+  step4Title: { en: 'Has your employer agreed to support this?', tn: 'A mmooki wa gago o dumetse go tshegetsa se?' },
+  step4Subtitle: { en: 'Let us know your employer situation so we can plan the best way to involve you', tn: 'Re bolelele ka maemo a gago a mong wa tiro gore re kgone go rulaganya tsela e e molemo ya go go akareletsa' },
   liveInBotswana: { en: 'I live in Botswana', tn: 'Ke nna mo Botswana' },
   liveAbroad: { en: 'I live abroad (Diaspora)', tn: 'Ke nna kwa ntle (Diaspora)' },
   cityTownVillage: { en: 'City / Town / Village', tn: 'Toropo / Motse' },
@@ -161,7 +207,7 @@ const t = {
 
   // ===== Step 5: Availability =====
   step5Title: { en: 'Your Availability', tn: 'Nako ya Gago' },
-  step5Subtitle: { en: 'How often and how would you like to volunteer?', tn: 'O ka thusa ga kae le jang?' },
+  step5Subtitle: { en: 'When are you available and how can we best reach you?', tn: 'O gona neng mme re ka go fitlhelela jang?' },
   frequency: { en: 'How often can you volunteer?', tn: 'O ka ithaopa ga kae?' },
   weekly: { en: 'Every week', tn: 'Beke le beke' },
   biweekly: { en: 'Every 2 weeks', tn: 'Dibeke di le 2' },
@@ -194,8 +240,10 @@ const t = {
   otherLang: { en: 'Other', tn: 'Tse Dingwe' },
 
   // ===== Step 6: Review & Pledge =====
-  step6Title: { en: 'Review & Pledge', tn: 'Tshekatsheko le Maitlamo' },
-  step6Subtitle: { en: 'Check your details and make your pledge', tn: 'Tlhomamisa tshedimosetso ya gago o bo o dire maitlamo' },
+  step6Title: { en: 'How often and how would you like to volunteer?', tn: 'O ka thusa ga kae le jang?' },
+  step6Subtitle: { en: 'Help us plan your involvement', tn: 'Re thuse go rulaganya go akaretsa ga gago' },
+  step7Title: { en: 'Review & Pledge', tn: 'Tshekatsheko le Maitlamo' },
+  step7Subtitle: { en: 'Check your details and make your pledge', tn: 'Tlhomamisa tshedimosetso ya gago o bo o dire maitlamo' },
   editSection: { en: 'Edit', tn: 'Fetola' },
   referralSource: { en: 'How did you hear about BaFitD?', tn: 'O utlwile ka BaFitD jang?' },
   socialMedia: { en: 'Social Media', tn: 'Media ya Loago' },
@@ -219,11 +267,12 @@ const t = {
   // ===== Navigation =====
   next: { en: 'Next', tn: 'E e latelang' },
   back: { en: 'Back', tn: 'Morago' },
-  nextStep2: { en: 'Next: Your Education', tn: 'E e latelang: Thuto ya Gago' },
-  nextStep3: { en: 'Next: Your Skills', tn: 'E e latelang: Bokgoni jwa Gago' },
-  nextStep4: { en: 'Next: Where & When', tn: 'E e latelang: Kae le Leng' },
-  nextStep5: { en: 'Next: Your Availability', tn: 'E e latelang: Nako ya Gago' },
-  nextStep6: { en: 'Next: Review & Pledge', tn: 'E e latelang: Tshekatsheko le Maitlamo' },
+  nextStep2: { en: 'Next: Where to serve', tn: 'E e latelang: Go thusa kae' },
+  nextStep3: { en: 'Next: When to start', tn: 'E e latelang: Go simolola leng' },
+  nextStep4: { en: 'Next: Employer support', tn: 'E e latelang: Tshegetso ya mong wa tiro' },
+  nextStep5: { en: 'Next: Your availability', tn: 'E e latelang: Nako ya gago' },
+  nextStep6: { en: 'Next: How you\'ll volunteer', tn: 'E e latelang: Jang o tla ithaopa' },
+  nextStep7: { en: 'Next: Review & Pledge', tn: 'E e latelang: Tshekatsheko le Maitlamo' },
 
   // ===== Errors =====
   errorRequired: { en: 'Please fill in this field', tn: 'Tswee-tswee tlatsa moo' },

@@ -78,6 +78,7 @@ export interface BaFitDFormData {
   passport_number: string;
   // Step 3: Skills
   skill_category: SkillCategory | '';
+  skill_category_other: string;
   skill_specialty: string;
   specific_services: string;
   years_of_experience: string;
@@ -133,6 +134,7 @@ export const INITIAL_FORM_DATA: BaFitDFormData = {
   omang_number: '',
   passport_number: '',
   skill_category: '',
+  skill_category_other: '',
   skill_specialty: '',
   specific_services: '',
   years_of_experience: '',

@@ -29,7 +29,7 @@ const Particles = React.lazy(() => import('../components/Particles'));
    CONSTANTS
    ============================================================================ */
 
-const TOTAL_STEPS = 6;
+const TOTAL_STEPS = 7;
 
 const SKILL_ICONS: Record<SkillCategory, React.ReactNode> = {
   healthcare: <Stethoscope className="w-6 h-6" />,
@@ -268,11 +268,16 @@ function KnoxBadge({ size = 'default', showLabel = true }: { size?: 'small' | 'd
    MAIN PAGE COMPONENT
    ============================================================================ */
 
+type RegistrationIntent = 'business' | 'professional' | 'internship' | 'idea' | 'giveback' | 'product' | null;
+
 const BaFitDPage: React.FC = () => {
   const navigate = useNavigate();
   const [lang, setLang] = useState<BaFitDLang>('en');
   const [isMobile, setIsMobile] = useState(false);
   const [stats, setStats] = useState<BaFitDStats | null>(null);
+
+  // Which "I am..." card the user clicked before registering
+  const [registrationIntent, setRegistrationIntent] = useState<RegistrationIntent>(null);
 
   // Input mode: 'choose' = picker, 'freeform' = essay, 'form' = wizard
   const [inputMode, setInputMode] = useState<'choose' | 'freeform' | 'form'>('choose');
@@ -320,6 +325,46 @@ const BaFitDPage: React.FC = () => {
     scrollToWizard();
   };
 
+  const startRegistrationWithIntent = (intent: NonNullable<RegistrationIntent>) => {
+    setRegistrationIntent(intent);
+    setCurrentStep(1);
+    setInputMode('choose');
+    scrollToWizard();
+  };
+
+  const INTENT_LABEL_KEY: Record<NonNullable<RegistrationIntent>, Parameters<typeof T>[0]> = {
+    business:     'intentLabelBusiness',
+    professional: 'intentLabelProfessional',
+    internship:   'intentLabelInternship',
+    idea:         'intentLabelIdea',
+    giveback:     'intentLabelGiveback',
+    product:      'intentLabelProduct',
+  };
+  const INTENT_SUBTITLE_KEY: Record<NonNullable<RegistrationIntent>, Parameters<typeof T>[0]> = {
+    business:     'intentSubtitleBusiness',
+    professional: 'intentSubtitleProfessional',
+    internship:   'intentSubtitleInternship',
+    idea:         'intentSubtitleIdea',
+    giveback:     'intentSubtitleGiveback',
+    product:      'intentSubtitleProduct',
+  };
+  const INTENT_ESSAY_LABEL_KEY: Record<NonNullable<RegistrationIntent>, Parameters<typeof T>[0]> = {
+    business:     'freeformEssayLabelBusiness',
+    professional: 'freeformEssayLabelProfessional',
+    internship:   'freeformEssayLabelInternship',
+    idea:         'freeformEssayLabelIdea',
+    giveback:     'freeformEssayLabelGiveback',
+    product:      'freeformEssayLabelProduct',
+  };
+  const INTENT_STEP1_SUBTITLE_KEY: Record<NonNullable<RegistrationIntent>, Parameters<typeof T>[0]> = {
+    business:     'step1SubtitleBusiness',
+    professional: 'step1SubtitleProfessional',
+    internship:   'step1SubtitleInternship',
+    idea:         'step1SubtitleIdea',
+    giveback:     'step1SubtitleGiveback',
+    product:      'step1SubtitleProduct',
+  };
+
   const pickFreeform = () => {
     setInputMode('freeform');
     scrollToWizard();
@@ -361,27 +406,24 @@ const BaFitDPage: React.FC = () => {
   const validateStep = (step: number): boolean => {
     const e: Record<string, string> = {};
     switch (step) {
-      case 1:
+      case 1: // Tell Us About Yourself
         if (!formData.full_name.trim()) e.full_name = T('errorName');
         if (!formData.phone.trim()) e.phone = T('errorPhone');
-        break;
-      case 2:
         if (!formData.qualification_level) e.qualification_level = T('errorQualification');
         if (!formData.qualification.trim()) e.qualification = T('errorQualification');
         if (!formData.institution.trim()) e.institution = T('errorInstitution');
-        break;
-      case 3:
         if (!formData.skill_category) e.skill_category = T('errorSkillCategory');
         if (!formData.skill_specialty.trim()) e.skill_specialty = T('errorSpecialty');
         break;
-      case 4:
+      case 2: // Which area of Botswana
         if (formData.is_diaspora === null) e.is_diaspora = T('errorRequired');
         if (!formData.city.trim()) e.city = T('errorCity');
         break;
-      case 5:
-        break; // All optional
-      case 6:
-        break;
+      case 3: break; // When can you start — optional
+      case 4: break; // Employer support — optional
+      case 5: break; // Availability — optional
+      case 6: break; // How often — optional
+      case 7: break; // Review & Pledge — optional
     }
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -430,7 +472,7 @@ const BaFitDPage: React.FC = () => {
   };
 
   const nextLabels: Record<number, Parameters<typeof tr>[0]> = {
-    1: 'nextStep2', 2: 'nextStep3', 3: 'nextStep4', 4: 'nextStep5', 5: 'nextStep6',
+    1: 'nextStep2', 2: 'nextStep3', 3: 'nextStep4', 4: 'nextStep5', 5: 'nextStep6', 6: 'nextStep7',
   };
 
   /* ========================================================================
@@ -481,12 +523,7 @@ const BaFitDPage: React.FC = () => {
       </header>
 
       {/* ===================== HERO SECTION ===================== */}
-      <section className="relative min-h-[80vh] sm:min-h-[85vh] flex items-center justify-center overflow-hidden">
-        {/* Knox security badge — top right of hero */}
-        <div className="absolute top-4 right-4 sm:right-6 z-20">
-          <KnoxBadge />
-        </div>
-
+      <section className="relative min-h-[80vh] sm:min-h-[85vh] flex items-start justify-center overflow-hidden">
         {/* Particles background */}
         <div className="absolute inset-0 z-0">
           <ParticlesErrorBoundary>
@@ -508,117 +545,145 @@ const BaFitDPage: React.FC = () => {
         {/* Radial glow — gives the hero depth */}
         <div className="absolute inset-0 z-[1] pointer-events-none hero-glow" />
 
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 text-center max-w-4xl py-20">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 leading-[1.05]">
-              <span className="text-deep-navy">Ba</span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-accent-orange">FitD</span>
-            </h1>
-            <p className="text-lg sm:text-xl md:text-2xl font-medium text-deep-navy/80 mb-2">
-              Batswana and Friends in the Diaspora
-            </p>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-base sm:text-lg md:text-xl text-deep-navy/70 max-w-2xl mx-auto mb-8 leading-relaxed px-2"
-          >
-            {T('tagline')}
-          </motion.p>
-
-          {/* Stats counters */}
-          {stats && (
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 text-center pt-8 pb-16">
+          <div className="max-w-4xl mx-auto">
             <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1 className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 leading-[1.05]">
+                <span className="text-deep-navy">Ba</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-accent-orange">FitD</span>
+              </h1>
+              <p className="text-lg sm:text-xl md:text-2xl font-medium text-deep-navy/80 mb-2">
+                Batswana and Friends in the Diaspora
+              </p>
+            </motion.div>
+
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-10"
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="text-base sm:text-lg md:text-xl text-deep-navy/70 max-w-2xl mx-auto mb-4 leading-relaxed px-2 italic"
             >
-              {[
-                { val: stats.total_volunteers, label: T('totalVolunteers'), icon: <Users className="w-5 h-5" /> },
-                { val: Object.keys(stats.by_category).length, label: T('skillCategories'), icon: <Sparkles className="w-5 h-5" /> },
-                { val: Object.keys(stats.by_city).length, label: T('citiesReached'), icon: <MapPin className="w-5 h-5" /> },
-              ].map((s, i) => (
-                <div key={i} className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/60 backdrop-blur-sm border border-teal/15 shadow-sm">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal/15 to-accent-orange/10 flex items-center justify-center text-teal">
-                    {s.icon}
-                  </div>
-                  <div className="text-left">
-                    <div className="text-2xl font-bold text-deep-navy font-headline">
-                      <AnimatedCounter value={s.val} />
-                    </div>
-                    <div className="text-xs text-deep-navy/60 font-medium">{s.label}</div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          )}
+              {T('tagline')}
+            </motion.p>
 
-          {/* Founder quote */}
-          <motion.blockquote
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.22 }}
+              className="text-sm sm:text-base md:text-lg text-deep-navy/60 max-w-2xl mx-auto mb-8 leading-relaxed px-2"
+            >
+              {T('heroDescription')}
+            </motion.p>
+
+            {/* Stats counters */}
+            {stats && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-10"
+              >
+                {[
+                  { val: stats.total_volunteers, label: T('totalVolunteers'), icon: <Users className="w-5 h-5" /> },
+                  { val: Object.keys(stats.by_category).length, label: T('skillCategories'), icon: <Sparkles className="w-5 h-5" /> },
+                  { val: Object.keys(stats.by_city).length, label: T('citiesReached'), icon: <MapPin className="w-5 h-5" /> },
+                ].map((s, i) => (
+                  <div key={i} className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/60 backdrop-blur-sm border border-teal/15 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal/15 to-accent-orange/10 flex items-center justify-center text-teal">
+                      {s.icon}
+                    </div>
+                    <div className="text-left">
+                      <div className="text-2xl font-bold text-deep-navy font-headline">
+                        <AnimatedCounter value={s.val} />
+                      </div>
+                      <div className="text-xs text-deep-navy/60 font-medium">{s.label}</div>
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            )}
+          </div>
+
+          {/* Preamble — full max-w-7xl width, aligned with header */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="relative max-w-xl mx-auto mb-10 px-6"
+            className="w-full mb-10 text-left bg-white/60 backdrop-blur-sm border border-teal/15 rounded-3xl px-8 sm:px-10 py-8 shadow-sm space-y-4"
           >
-            <div className="absolute -top-3 left-4 text-5xl leading-none text-teal/20 font-serif select-none">&ldquo;</div>
-            <p className="text-base sm:text-lg italic text-deep-navy/80 leading-relaxed pl-4 border-l-2 border-teal/30">
-              A nation invested in your mind. Now imagine what happens when that mind turns around and pours back into its people. That is the power of one skilled hand, freely given.
+            <p className="text-sm font-semibold text-teal uppercase tracking-widest">
+              Pronounced &ldquo;Ba Fiti&rdquo; — they are Fit!
             </p>
-            <footer className="mt-3 pl-4 text-sm font-semibold text-deep-navy/50 tracking-wide">
-              — Thabo Shakes Mathews
-            </footer>
-          </motion.blockquote>
+            <p className="text-sm sm:text-base text-deep-navy/80 leading-relaxed">
+              Batswana and Friends in the Diaspora (BaFitD) is an ever-evolving online platform designed to connect professionals and businesspersons passionate about the upliftment of Botswana.
+            </p>
+            <p className="text-sm sm:text-base text-deep-navy/80 leading-relaxed">
+              It is for citizens of Botswana living in the country as well as those who are resident abroad. Non-Batswana who have previously lived in, or interacted with the country, and who are passionate about making a difference to the lives of Batswana are also welcome to join.
+            </p>
+            <p className="text-sm sm:text-base text-deep-navy/80 leading-relaxed">
+              If you have a business or a product you have developed — we want to know about it. Why? Because we want to help you promote the business and/or products across our various networks.
+            </p>
+            <p className="text-sm sm:text-base text-deep-navy/80 leading-relaxed">
+              If you work for an employer who takes on interns — we want to know. Why? Because maybe you can help the child of a Motswana seeking an internship opportunity secure one. One day it might be your loved one who is assisted.
+            </p>
+            <p className="text-sm sm:text-base text-deep-navy/80 leading-relaxed">
+              If you are a Motswana, we will ask you questions such as &ldquo;Which primary school did you attend?&rdquo; and &ldquo;Which village are you from?&rdquo; Why? Because we hope that through this online platform we can put together networks to help uplift your former school or home village.
+            </p>
+            <p className="text-sm sm:text-base text-deep-navy/80 leading-relaxed">
+              As we receive feedback, we will endeavour to improve the platform. It is not intended to be a panacea to all the challenges facing the country — but instead to be a platform where people can talk and share with purpose.
+            </p>
+            <p className="text-base sm:text-lg font-bold text-teal">
+              A re neng fiti beng betsho!
+            </p>
+          </motion.div>
 
+          {/* Intent cards — primary CTA */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.55 }}
+            className="w-full max-w-4xl mx-auto"
           >
-            <motion.button
-              onClick={startRegistration}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl btn-gradient text-white font-bold text-lg shadow-xl hover:shadow-2xl transition-all min-h-[56px]"
-            >
-              {T('registerCta')}
-              <ChevronDown className="w-5 h-5" />
-            </motion.button>
+            <p className="text-sm font-semibold text-deep-navy/50 uppercase tracking-widest mb-5">
+              {T('heroJoinPrompt')}
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6">
+              {([
+                { intent: 'business' as const,    key: 'bullet1' as const, icon: <Briefcase className="w-5 h-5" /> },
+                { intent: 'professional' as const, key: 'bullet2' as const, icon: <Users className="w-5 h-5" /> },
+                { intent: 'internship' as const,   key: 'bullet3' as const, icon: <GraduationCap className="w-5 h-5" /> },
+                { intent: 'idea' as const,         key: 'bullet4' as const, icon: <Lock className="w-5 h-5" /> },
+                { intent: 'product' as const,      key: 'bullet6' as const, icon: <Sparkles className="w-5 h-5" /> },
+                { intent: 'giveback' as const,     key: 'bullet5' as const, icon: <Heart className="w-5 h-5" /> },
+              ]).map((card, i) => (
+                <motion.button
+                  key={i}
+                  type="button"
+                  onClick={() => startRegistrationWithIntent(card.intent)}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.6 + i * 0.07 }}
+                  whileHover={{ scale: 1.03, y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  className={`group text-left flex items-start gap-3 p-4 rounded-2xl backdrop-blur-sm border transition-all ${registrationIntent === card.intent ? 'bg-teal/10 border-teal shadow-lg' : 'bg-white/70 border-teal/20 hover:border-teal hover:bg-white/90 hover:shadow-lg'}`}
+                >
+                  <div className={`shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all ${registrationIntent === card.intent ? 'bg-gradient-to-br from-teal to-accent-orange text-white' : 'bg-gradient-to-br from-teal/15 to-accent-orange/10 group-hover:from-teal group-hover:to-accent-orange text-teal group-hover:text-white'}`}>
+                    {card.icon}
+                  </div>
+                  <p className="text-xs sm:text-sm text-deep-navy/80 leading-snug group-hover:text-deep-navy transition-colors">
+                    {T(card.key)}
+                  </p>
+                </motion.button>
+              ))}
+            </div>
+            <p className="text-xs text-deep-navy/40 text-center">
+              {T('heroJoinPromptSub')}
+            </p>
           </motion.div>
-        </div>
-      </section>
-
-      {/* ===================== INTRO SECTION ===================== */}
-      <section className="py-16 sm:py-20 bg-gradient-to-b from-sand-200 to-sand-100">
-        <div className="container mx-auto px-4 sm:px-6 max-w-3xl">
-          <GlassCard className="p-8 sm:p-10 lg:p-12" delay={0}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-teal flex items-center justify-center text-white shadow-lg flex-shrink-0">
-                <BookOpen className="w-6 h-6" />
-              </div>
-              <div>
-                <h2 className="font-headline text-2xl sm:text-3xl font-bold text-deep-navy">BaFitD</h2>
-                <p className="text-sm text-teal font-semibold">{T('introPronunciation')}</p>
-              </div>
-            </div>
-            <div className="space-y-4 text-base sm:text-lg text-deep-navy/80 leading-relaxed">
-              <p>{T('introP1')}</p>
-              <p>{T('introP2')}</p>
-              <p>{T('introP3')}</p>
-              <p>{T('introP4')}</p>
-              <p>{T('introP5')}</p>
-              <p>{T('introP6')}</p>
-              <p className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal to-accent-orange pt-2">
-                {T('introClosing')}
-              </p>
-            </div>
-          </GlassCard>
         </div>
       </section>
 
@@ -766,9 +831,18 @@ const BaFitDPage: React.FC = () => {
                   <h2 className="font-headline text-2xl sm:text-3xl font-bold text-deep-navy mb-2 text-center">
                     {T('chooseInputMode')}
                   </h2>
-                  <p className="text-base text-deep-navy/60 mb-8 text-center">
+                  <p className="text-base text-deep-navy/60 mb-4 text-center">
                     {T('chooseInputModeSubtitle')}
                   </p>
+                  {registrationIntent && (
+                    <div className="mb-6 px-4 py-3 rounded-xl bg-teal/5 border border-teal/20 flex items-start gap-2 text-sm text-deep-navy/80">
+                      <Check className="w-4 h-4 text-teal shrink-0 mt-0.5" />
+                      <span>
+                        <span className="font-semibold text-deep-navy">{T('intentNote')} </span>
+                        {T(INTENT_LABEL_KEY[registrationIntent])}
+                      </span>
+                    </div>
+                  )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <motion.button
                       type="button"
@@ -813,8 +887,15 @@ const BaFitDPage: React.FC = () => {
               >
                 <GlassCard className="p-6 sm:p-8">
                   <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('freeformTitle')}</h3>
-                  <p className="text-sm text-emerald-700/80 font-medium mb-1 text-center flex items-center justify-center gap-1.5"><Lock className="w-3 h-3" /> Your information is protected by Uhuru Knox</p>
-                  <p className="text-base text-deep-navy/60 mb-6 text-center leading-relaxed">{T('freeformSubtitle')}</p>
+                  {registrationIntent && (
+                    <div className="mb-3 px-3 py-2 rounded-lg bg-teal/5 border border-teal/15 flex items-start gap-2 text-xs text-deep-navy/70">
+                      <Check className="w-3.5 h-3.5 text-teal shrink-0 mt-0.5" />
+                      <span><span className="font-semibold">{T('intentNote')} </span>{T(INTENT_LABEL_KEY[registrationIntent])}</span>
+                    </div>
+                  )}
+                  <p className="text-base text-deep-navy/60 mb-6 text-center leading-relaxed">
+                    {registrationIntent ? T(INTENT_SUBTITLE_KEY[registrationIntent]) : T('freeformSubtitle')}
+                  </p>
 
                   <div className="space-y-5">
                     <FormField label={T('freeformNameLabel')} error={errors.full_name}>
@@ -826,7 +907,7 @@ const BaFitDPage: React.FC = () => {
                     <FormField label={T('freeformEmailLabel')}>
                       <input type="email" className={inputClass} placeholder={T('emailPlaceholder')} value={freeformData.email} onChange={e => setFreeformData(d => ({ ...d, email: e.target.value }))} autoComplete="email" />
                     </FormField>
-                    <FormField label={T('freeformEssayLabel')} error={errors.freeform_text}>
+                    <FormField label={registrationIntent ? T(INTENT_ESSAY_LABEL_KEY[registrationIntent]) : T('freeformEssayLabel')} error={errors.freeform_text}>
                       <textarea
                         className={`${textareaClass} !min-h-[240px]`}
                         placeholder={T('freeformPlaceholder')}
@@ -890,7 +971,7 @@ const BaFitDPage: React.FC = () => {
                       {T('stepOf', { current: currentStep, total: TOTAL_STEPS })}
                     </span>
                     <span className="text-sm text-deep-navy/40">
-                      {currentStep === 1 ? T('step1Title') : currentStep === 2 ? T('step2Title') : currentStep === 3 ? T('step3Title') : currentStep === 4 ? T('step4Title') : currentStep === 5 ? T('step5Title') : T('step6Title')}
+                      {currentStep === 1 ? T('step1Title') : currentStep === 2 ? T('step2Title') : currentStep === 3 ? T('step3Title') : currentStep === 4 ? T('step4Title') : currentStep === 5 ? T('step5Title') : currentStep === 6 ? T('step6Title') : T('step7Title')}
                     </span>
                   </div>
                   <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
@@ -905,13 +986,24 @@ const BaFitDPage: React.FC = () => {
 
                 <GlassCard className="p-6 sm:p-8">
                   <AnimatePresence mode="wait" custom={direction}>
-                    {/* ===== STEP 1: ABOUT YOU ===== */}
+                    {/* ===== STEP 1: TELL US ABOUT YOURSELF ===== */}
                     {currentStep === 1 && (
                       <motion.div key="s1" custom={direction} variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: 'easeOut' }}>
                         <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('step1Title')}</h3>
-                        <p className="text-sm text-emerald-700/80 font-medium mb-1 text-center flex items-center justify-center gap-1.5"><Lock className="w-3 h-3" /> Your information is protected by Uhuru Knox</p>
-                        <p className="text-base text-deep-navy/60 mb-6 text-center">{T('step1Subtitle')}</p>
-                        <div className="space-y-5">
+                              {registrationIntent && (
+                          <div className="mb-3 px-3 py-2 rounded-lg bg-teal/5 border border-teal/15 flex items-start gap-2 text-xs text-deep-navy/70">
+                            <Check className="w-3.5 h-3.5 text-teal shrink-0 mt-0.5" />
+                            <span><span className="font-semibold">{T('intentNote')} </span>{T(INTENT_LABEL_KEY[registrationIntent])}</span>
+                          </div>
+                        )}
+                        <p className="text-base text-deep-navy/60 mb-6 text-center">{registrationIntent ? T(INTENT_STEP1_SUBTITLE_KEY[registrationIntent]) : T('step1Subtitle')}</p>
+
+                        {/* Personal Details subsection */}
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="w-6 h-6 rounded-lg bg-teal flex items-center justify-center text-white shrink-0"><User className="w-3.5 h-3.5" /></div>
+                          <h4 className="font-semibold text-sm text-deep-navy uppercase tracking-wide">{T('step1SectionPersonal')}</h4>
+                        </div>
+                        <div className="space-y-5 mb-8">
                           <FormField label={T('fullName')} error={errors.full_name}>
                             <input type="text" className={inputClass} placeholder={T('fullNamePlaceholder')} value={formData.full_name} onChange={e => updateField('full_name', e.target.value)} autoComplete="name" />
                           </FormField>
@@ -934,35 +1026,6 @@ const BaFitDPage: React.FC = () => {
                                 <SelectionCard key={r} selected={formData.age_range === r} onClick={() => updateField('age_range', r)} label={r} className="text-center justify-center" />
                               ))}
                             </div>
-                          </FormField>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {/* ===== STEP 2: EDUCATION ===== */}
-                    {currentStep === 2 && (
-                      <motion.div key="s2" custom={direction} variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: 'easeOut' }}>
-                        <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('step2Title')}</h3>
-                        <p className="text-base text-deep-navy/60 mb-6 text-center">{T('step2Subtitle')}</p>
-                        <div className="space-y-5">
-                          <FormField label={T('qualificationLevel')} error={errors.qualification_level}>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                              {([
-                                ['certificate', T('certificate')], ['diploma', T('diploma')], ['degree', T('degree')],
-                                ['masters', T('masters')], ['doctorate', T('doctorate')], ['other', T('otherQual')],
-                              ] as const).map(([v, l]) => (
-                                <SelectionCard key={v} selected={formData.qualification_level === v} onClick={() => updateField('qualification_level', v as QualificationLevel)} label={l} icon={<GraduationCap className="w-5 h-5" />} />
-                              ))}
-                            </div>
-                          </FormField>
-                          <FormField label={T('qualificationName')} error={errors.qualification}>
-                            <input type="text" className={inputClass} placeholder={T('qualificationNamePlaceholder')} value={formData.qualification} onChange={e => updateField('qualification', e.target.value)} />
-                          </FormField>
-                          <FormField label={T('institution')} error={errors.institution}>
-                            <input type="text" className={inputClass} placeholder={T('institutionPlaceholder')} value={formData.institution} onChange={e => updateField('institution', e.target.value)} />
-                          </FormField>
-                          <FormField label={T('graduationYear')} optional>
-                            <input type="number" className={inputClass} placeholder="2005" min={1950} max={new Date().getFullYear()} value={formData.graduation_year} onChange={e => updateField('graduation_year', e.target.value)} />
                           </FormField>
                           <FormField label={T('nationality')}>
                             <select title={T('nationality')} className={selectClass} value={formData.nationality} onChange={e => { updateField('nationality', e.target.value); updateField('omang_number', ''); updateField('passport_number', ''); }}>
@@ -1016,27 +1079,55 @@ const BaFitDPage: React.FC = () => {
                             </>
                           )}
                         </div>
-                      </motion.div>
-                    )}
 
-                    {/* ===== STEP 3: SKILLS ===== */}
-                    {currentStep === 3 && (
-                      <motion.div key="s3" custom={direction} variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: 'easeOut' }}>
-                        <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('step3Title')}</h3>
-                        <p className="text-base text-deep-navy/60 mb-6 text-center">{T('step3Subtitle')}</p>
+                        {/* Your Background subsection */}
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="w-6 h-6 rounded-lg bg-teal flex items-center justify-center text-white shrink-0"><GraduationCap className="w-3.5 h-3.5" /></div>
+                          <h4 className="font-semibold text-sm text-deep-navy uppercase tracking-wide">{T('step1SectionBackground')}</h4>
+                        </div>
+                        <div className="space-y-5 mb-8">
+                          <FormField label={T('qualificationLevel')} error={errors.qualification_level}>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                              {([
+                                ['certificate', T('certificate')], ['diploma', T('diploma')], ['degree', T('degree')],
+                                ['masters', T('masters')], ['doctorate', T('doctorate')], ['other', T('otherQual')],
+                              ] as const).map(([v, l]) => (
+                                <SelectionCard key={v} selected={formData.qualification_level === v} onClick={() => updateField('qualification_level', v as QualificationLevel)} label={l} icon={<GraduationCap className="w-5 h-5" />} />
+                              ))}
+                            </div>
+                          </FormField>
+                          <FormField label={T('qualificationName')} error={errors.qualification}>
+                            <input type="text" className={inputClass} placeholder={T('qualificationNamePlaceholder')} value={formData.qualification} onChange={e => updateField('qualification', e.target.value)} />
+                          </FormField>
+                          <FormField label={T('institution')} error={errors.institution}>
+                            <input type="text" className={inputClass} placeholder={T('institutionPlaceholder')} value={formData.institution} onChange={e => updateField('institution', e.target.value)} />
+                          </FormField>
+                          <FormField label={T('graduationYear')} optional>
+                            <input type="number" className={inputClass} placeholder="2005" min={1950} max={new Date().getFullYear()} value={formData.graduation_year} onChange={e => updateField('graduation_year', e.target.value)} />
+                          </FormField>
+                        </div>
+
+                        {/* Your Skills subsection */}
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="w-6 h-6 rounded-lg bg-teal flex items-center justify-center text-white shrink-0"><Briefcase className="w-3.5 h-3.5" /></div>
+                          <h4 className="font-semibold text-sm text-deep-navy uppercase tracking-wide">{T('step1SectionSkills')}</h4>
+                        </div>
                         <div className="space-y-5">
                           <FormField label={T('skillCategory')} error={errors.skill_category}>
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                               {(Object.keys(SKILL_ICONS) as SkillCategory[]).map(cat => (
-                                <SelectionCard
-                                  key={cat}
-                                  selected={formData.skill_category === cat}
-                                  onClick={() => updateField('skill_category', cat)}
-                                  icon={SKILL_ICONS[cat]}
-                                  label={SKILL_LABELS[cat][lang]}
-                                />
+                                <SelectionCard key={cat} selected={formData.skill_category === cat} onClick={() => updateField('skill_category', cat)} icon={SKILL_ICONS[cat]} label={SKILL_LABELS[cat][lang]} />
                               ))}
                             </div>
+                            {formData.skill_category === 'other' && (
+                              <input
+                                type="text"
+                                className={`${inputClass} mt-3`}
+                                placeholder={lang === 'en' ? 'Please describe your area of expertise' : 'Tlhalosa lefelo la boitseanape jwa gago'}
+                                value={formData.skill_category_other}
+                                onChange={e => updateField('skill_category_other', e.target.value)}
+                              />
+                            )}
                           </FormField>
                           <FormField label={T('specialty')} error={errors.skill_specialty}>
                             <input type="text" className={inputClass} placeholder={T('specialtyPlaceholder')} value={formData.skill_specialty} onChange={e => updateField('skill_specialty', e.target.value)} />
@@ -1046,13 +1137,9 @@ const BaFitDPage: React.FC = () => {
                           </FormField>
                           <FormField label={T('yearsExperience')}>
                             <div className="flex items-center gap-4">
-                              <motion.button type="button" whileTap={{ scale: 0.9 }} onClick={() => updateField('years_of_experience', String(Math.max(0, parseInt(formData.years_of_experience || '0') - 1)))} className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center text-deep-navy hover:bg-gray-200 transition-colors">
-                                <Minus className="w-5 h-5" />
-                              </motion.button>
+                              <motion.button type="button" whileTap={{ scale: 0.9 }} onClick={() => updateField('years_of_experience', String(Math.max(0, parseInt(formData.years_of_experience || '0') - 1)))} className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center text-deep-navy hover:bg-gray-200 transition-colors"><Minus className="w-5 h-5" /></motion.button>
                               <input type="number" title="Years of experience" className={`${inputClass} text-center max-w-[100px]`} value={formData.years_of_experience} onChange={e => updateField('years_of_experience', e.target.value)} min={0} max={60} />
-                              <motion.button type="button" whileTap={{ scale: 0.9 }} onClick={() => updateField('years_of_experience', String(parseInt(formData.years_of_experience || '0') + 1))} className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center text-deep-navy hover:bg-gray-200 transition-colors">
-                                <Plus className="w-5 h-5" />
-                              </motion.button>
+                              <motion.button type="button" whileTap={{ scale: 0.9 }} onClick={() => updateField('years_of_experience', String(parseInt(formData.years_of_experience || '0') + 1))} className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center text-deep-navy hover:bg-gray-200 transition-colors"><Plus className="w-5 h-5" /></motion.button>
                             </div>
                           </FormField>
                           <FormField label={T('currentEmployer')} optional>
@@ -1065,11 +1152,11 @@ const BaFitDPage: React.FC = () => {
                       </motion.div>
                     )}
 
-                    {/* ===== STEP 4: WHERE & WHEN ===== */}
-                    {currentStep === 4 && (
-                      <motion.div key="s4" custom={direction} variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: 'easeOut' }}>
-                        <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('step4Title')}</h3>
-                        <p className="text-base text-deep-navy/60 mb-6 text-center">{T('step4Subtitle')}</p>
+                    {/* ===== STEP 2: WHICH AREA OF BOTSWANA ===== */}
+                    {currentStep === 2 && (
+                      <motion.div key="s2" custom={direction} variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: 'easeOut' }}>
+                        <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('step2Title')}</h3>
+                        <p className="text-base text-deep-navy/60 mb-6 text-center">{T('step2Subtitle')}</p>
                         <div className="space-y-5">
                           <FormField label={lang === 'en' ? 'Where are you based?' : 'O nna kae?'} error={errors.is_diaspora}>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1077,7 +1164,6 @@ const BaFitDPage: React.FC = () => {
                               <SelectionCard selected={formData.is_diaspora === true} onClick={() => updateField('is_diaspora', true)} label={T('liveAbroad')} icon={<Globe className="w-5 h-5" />} />
                             </div>
                           </FormField>
-
                           {formData.is_diaspora === false && (
                             <>
                               <FormField label={T('cityTownVillage')} error={errors.city}>
@@ -1097,7 +1183,6 @@ const BaFitDPage: React.FC = () => {
                               </FormField>
                             </>
                           )}
-
                           {formData.is_diaspora === true && (
                             <>
                               <FormField label={T('countryOfResidence')} error={errors.city}>
@@ -1114,90 +1199,72 @@ const BaFitDPage: React.FC = () => {
                               </FormField>
                             </>
                           )}
-
                           {formData.is_diaspora !== null && (
-                            <>
-                              <FormField label={T('preferredServiceDistrict')} optional>
-                                <div className="relative">
-                                  <select className={selectClass} title="Preferred service district" value={formData.preferred_service_district} onChange={e => updateField('preferred_service_district', e.target.value)}>
-                                    <option value="">{T('selectServiceDistrict')}</option>
-                                    {BOTSWANA_DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
-                                  </select>
-                                  <ChevronDown className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                </div>
-                              </FormField>
-                              <FormField label={T('whenStart')}>
-                                <div className="grid grid-cols-2 gap-3">
-                                  {([
-                                    ['immediately', T('immediately')], ['within_1_month', T('within1Month')],
-                                    ['within_3_months', T('within3Months')], ['not_sure', T('notSure')],
-                                  ] as const).map(([v, l]) => (
-                                    <SelectionCard key={v} selected={formData.start_availability === v} onClick={() => updateField('start_availability', v as StartAvailability)} label={l} />
-                                  ))}
-                                </div>
-                              </FormField>
-                              <FormField label={T('employerSupport')}>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                  {([
-                                    ['yes', T('employerYes')], ['not_yet', T('employerNotYet')],
-                                    ['self_employed', T('employerSelf')], ['retired', T('employerRetired')],
-                                    ['not_applicable', T('employerNA')],
-                                  ] as const).map(([v, l]) => (
-                                    <SelectionCard key={v} selected={formData.employer_support === v} onClick={() => updateField('employer_support', v as EmployerSupport)} label={l} />
-                                  ))}
-                                </div>
-                              </FormField>
-                            </>
+                            <FormField label={T('preferredServiceDistrict')} optional>
+                              <div className="relative">
+                                <select className={selectClass} title="Preferred service district" value={formData.preferred_service_district} onChange={e => updateField('preferred_service_district', e.target.value)}>
+                                  <option value="">{T('selectServiceDistrict')}</option>
+                                  {BOTSWANA_DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+                                </select>
+                                <ChevronDown className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                              </div>
+                            </FormField>
                           )}
                         </div>
                       </motion.div>
                     )}
 
-                    {/* ===== STEP 5: AVAILABILITY ===== */}
+                    {/* ===== STEP 3: WHEN CAN YOU START? ===== */}
+                    {currentStep === 3 && (
+                      <motion.div key="s3" custom={direction} variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: 'easeOut' }}>
+                        <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('step3Title')}</h3>
+                        <p className="text-base text-deep-navy/60 mb-8 text-center">{T('step3Subtitle')}</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {([
+                            ['immediately', T('immediately')], ['within_1_month', T('within1Month')],
+                            ['within_3_months', T('within3Months')], ['not_sure', T('notSure')],
+                          ] as const).map(([v, l]) => (
+                            <SelectionCard key={v} selected={formData.start_availability === v} onClick={() => updateField('start_availability', v as StartAvailability)} label={l} icon={<Calendar className="w-5 h-5" />} className="p-5 text-base" />
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* ===== STEP 4: HAS YOUR EMPLOYER AGREED? ===== */}
+                    {currentStep === 4 && (
+                      <motion.div key="s4" custom={direction} variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: 'easeOut' }}>
+                        <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('step4Title')}</h3>
+                        <p className="text-base text-deep-navy/60 mb-8 text-center">{T('step4Subtitle')}</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {([
+                            ['yes', T('employerYes')], ['not_yet', T('employerNotYet')],
+                            ['self_employed', T('employerSelf')], ['retired', T('employerRetired')],
+                            ['not_applicable', T('employerNA')],
+                          ] as const).map(([v, l]) => (
+                            <SelectionCard key={v} selected={formData.employer_support === v} onClick={() => updateField('employer_support', v as EmployerSupport)} label={l} className="p-5 text-base" />
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* ===== STEP 5: YOUR AVAILABILITY ===== */}
                     {currentStep === 5 && (
                       <motion.div key="s5" custom={direction} variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: 'easeOut' }}>
                         <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('step5Title')}</h3>
                         <p className="text-base text-deep-navy/60 mb-6 text-center">{T('step5Subtitle')}</p>
                         <div className="space-y-5">
-                          <FormField label={T('frequency')}>
-                            <div className="grid grid-cols-2 gap-3">
-                              {([
-                                ['weekly', T('weekly')], ['biweekly', T('biweekly')],
-                                ['monthly', T('monthly')], ['flexible', T('flexible')],
-                              ] as const).map(([v, l]) => (
-                                <SelectionCard key={v} selected={formData.availability_frequency === v} onClick={() => updateField('availability_frequency', v as AvailabilityFrequency)} label={l} icon={<Calendar className="w-5 h-5" />} />
-                              ))}
-                            </div>
-                          </FormField>
-                          <FormField label={T('preferredDays')}>
+                          <FormField label={T('preferredDays')} optional>
                             <div className="flex flex-wrap gap-2">
                               {DAYS_OF_WEEK.map(day => {
                                 const dayKey = day as Parameters<typeof tr>[0];
                                 const sel = formData.preferred_days.includes(day);
                                 return (
-                                  <motion.button
-                                    key={day}
-                                    type="button"
-                                    whileTap={{ scale: 0.93 }}
-                                    onClick={() => {
-                                      const next = sel ? formData.preferred_days.filter(d => d !== day) : [...formData.preferred_days, day];
-                                      updateField('preferred_days', next);
-                                    }}
-                                    className={`min-h-[48px] min-w-[48px] px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                                      sel ? 'bg-teal text-white shadow-md' : 'bg-sand-200 border border-gray-300 text-deep-navy/80 hover:border-teal hover:bg-teal/5'
-                                    }`}
-                                  >
-                                    {T(dayKey)}
-                                  </motion.button>
+                                  <motion.button key={day} type="button" whileTap={{ scale: 0.93 }}
+                                    onClick={() => { const next = sel ? formData.preferred_days.filter(d => d !== day) : [...formData.preferred_days, day]; updateField('preferred_days', next); }}
+                                    className={`min-h-[48px] min-w-[48px] px-4 py-2 rounded-xl font-semibold text-sm transition-all ${sel ? 'bg-teal text-white shadow-md' : 'bg-sand-200 border border-gray-300 text-deep-navy/80 hover:border-teal hover:bg-teal/5'}`}
+                                  >{T(dayKey)}</motion.button>
                                 );
                               })}
-                            </div>
-                          </FormField>
-                          <FormField label={T('serviceMode')}>
-                            <div className="grid grid-cols-3 gap-3">
-                              {([['in_person', T('inPerson')], ['virtual', T('virtual')], ['both', T('both')]] as const).map(([v, l]) => (
-                                <SelectionCard key={v} selected={formData.service_mode === v} onClick={() => updateField('service_mode', v as ServiceMode)} label={l} />
-                              ))}
                             </div>
                           </FormField>
                           <FormField label={T('preferredContact')}>
@@ -1220,20 +1287,10 @@ const BaFitDPage: React.FC = () => {
                               ] as const).map(([v, l]) => {
                                 const sel = formData.languages_spoken.includes(v as BotswanaLanguage);
                                 return (
-                                  <motion.button
-                                    key={v}
-                                    type="button"
-                                    whileTap={{ scale: 0.93 }}
-                                    onClick={() => {
-                                      const next = sel ? formData.languages_spoken.filter(x => x !== v) : [...formData.languages_spoken, v as BotswanaLanguage];
-                                      updateField('languages_spoken', next);
-                                    }}
-                                    className={`min-h-[44px] px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                                      sel ? 'bg-teal text-white shadow-md' : 'bg-sand-200 border border-gray-300 text-deep-navy/80 hover:border-teal hover:bg-teal/5'
-                                    }`}
-                                  >
-                                    {l}
-                                  </motion.button>
+                                  <motion.button key={v} type="button" whileTap={{ scale: 0.93 }}
+                                    onClick={() => { const next = sel ? formData.languages_spoken.filter(x => x !== v) : [...formData.languages_spoken, v as BotswanaLanguage]; updateField('languages_spoken', next); }}
+                                    className={`min-h-[44px] px-4 py-2 rounded-xl text-sm font-medium transition-all ${sel ? 'bg-teal text-white shadow-md' : 'bg-sand-200 border border-gray-300 text-deep-navy/80 hover:border-teal hover:bg-teal/5'}`}
+                                  >{l}</motion.button>
                                 );
                               })}
                             </div>
@@ -1242,34 +1299,59 @@ const BaFitDPage: React.FC = () => {
                       </motion.div>
                     )}
 
-                    {/* ===== STEP 6: REVIEW & PLEDGE ===== */}
+                    {/* ===== STEP 6: HOW OFTEN AND HOW ===== */}
                     {currentStep === 6 && (
                       <motion.div key="s6" custom={direction} variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: 'easeOut' }}>
                         <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('step6Title')}</h3>
                         <p className="text-base text-deep-navy/60 mb-6 text-center">{T('step6Subtitle')}</p>
+                        <div className="space-y-5">
+                          <FormField label={T('frequency')}>
+                            <div className="grid grid-cols-2 gap-3">
+                              {([
+                                ['weekly', T('weekly')], ['biweekly', T('biweekly')],
+                                ['monthly', T('monthly')], ['flexible', T('flexible')],
+                              ] as const).map(([v, l]) => (
+                                <SelectionCard key={v} selected={formData.availability_frequency === v} onClick={() => updateField('availability_frequency', v as AvailabilityFrequency)} label={l} icon={<Calendar className="w-5 h-5" />} />
+                              ))}
+                            </div>
+                          </FormField>
+                          <FormField label={T('serviceMode')}>
+                            <div className="grid grid-cols-3 gap-3">
+                              {([['in_person', T('inPerson')], ['virtual', T('virtual')], ['both', T('both')]] as const).map(([v, l]) => (
+                                <SelectionCard key={v} selected={formData.service_mode === v} onClick={() => updateField('service_mode', v as ServiceMode)} label={l} />
+                              ))}
+                            </div>
+                          </FormField>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* ===== STEP 7: REVIEW & PLEDGE ===== */}
+                    {currentStep === 7 && (
+                      <motion.div key="s7" custom={direction} variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: 'easeOut' }}>
+                        <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('step7Title')}</h3>
+                        <p className="text-base text-deep-navy/60 mb-6 text-center">{T('step7Subtitle')}</p>
 
                         {/* Review summary */}
                         <div className="space-y-4 mb-6">
                           {([
                             { step: 1, title: T('step1Title'), icon: <User className="w-4 h-4" />, items: [
                               formData.full_name, formData.phone, formData.email, formData.gender, formData.age_range,
-                            ].filter(Boolean) },
-                            { step: 2, title: T('step2Title'), icon: <GraduationCap className="w-4 h-4" />, items: [
-                              formData.qualification_level, formData.qualification, formData.institution,
-                              formData.graduation_year, formData.government_funded ? 'Govt. funded' : '',
-                            ].filter(Boolean) },
-                            { step: 3, title: T('step3Title'), icon: <Briefcase className="w-4 h-4" />, items: [
+                              formData.qualification_level, formData.qualification,
                               formData.skill_category && SKILL_LABELS[formData.skill_category as SkillCategory]?.[lang],
-                              formData.skill_specialty, formData.years_of_experience ? `${formData.years_of_experience} yrs exp` : '',
-                              formData.current_employer,
+                              formData.skill_specialty,
                             ].filter(Boolean) },
-                            { step: 4, title: T('step4Title'), icon: <MapPin className="w-4 h-4" />, items: [
+                            { step: 2, title: T('step2Title'), icon: <MapPin className="w-4 h-4" />, items: [
                               formData.city, formData.district, formData.is_diaspora ? `Diaspora: ${formData.country_of_residence}` : 'Botswana',
-                              formData.start_availability,
+                              formData.preferred_service_district,
                             ].filter(Boolean) },
-                            { step: 5, title: T('step5Title'), icon: <Calendar className="w-4 h-4" />, items: [
-                              formData.availability_frequency, formData.preferred_days.join(', '), formData.service_mode,
-                              formData.preferred_contact, formData.languages_spoken.join(', '),
+                            { step: 3, title: T('step3Title'), icon: <Calendar className="w-4 h-4" />, items: [formData.start_availability].filter(Boolean) },
+                            { step: 4, title: T('step4Title'), icon: <Briefcase className="w-4 h-4" />, items: [formData.employer_support].filter(Boolean) },
+                            { step: 5, title: T('step5Title'), icon: <Phone className="w-4 h-4" />, items: [
+                              formData.preferred_days.join(', '), formData.preferred_contact, formData.languages_spoken.join(', '),
+                            ].filter(Boolean) },
+                            { step: 6, title: T('step6Title'), icon: <Globe className="w-4 h-4" />, items: [
+                              formData.availability_frequency, formData.service_mode,
                             ].filter(Boolean) },
                           ]).map(section => (
                             <div key={section.step} className="flex items-start gap-3 p-4 rounded-xl bg-sand-50 border border-teal/10">

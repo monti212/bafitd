@@ -13,6 +13,8 @@ export interface Volunteer {
   preferred_contact: string;
   city: string;
   district: string | null;
+  omang_number: string | null;
+  passport_number: string | null;
   is_diaspora: boolean;
   country_of_residence: string;
   willing_to_travel_back: boolean | null;
