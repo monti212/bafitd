@@ -29,7 +29,7 @@ const Particles = React.lazy(() => import('../components/Particles'));
    CONSTANTS
    ============================================================================ */
 
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 6;
 
 const SKILL_ICONS: Record<SkillCategory, React.ReactNode> = {
   healthcare: <Stethoscope className="w-6 h-6" />,
@@ -971,7 +971,7 @@ const BaFitDPage: React.FC = () => {
                       {T('stepOf', { current: currentStep, total: TOTAL_STEPS })}
                     </span>
                     <span className="text-sm text-deep-navy/40">
-                      {currentStep === 1 ? T('step1Title') : currentStep === 2 ? T('step2Title') : currentStep === 3 ? T('step3Title') : currentStep === 4 ? T('step4Title') : currentStep === 5 ? T('step5Title') : currentStep === 6 ? T('step6Title') : T('step7Title')}
+                      {currentStep === 1 ? T('step1Title') : currentStep === 2 ? T('step2Title') : currentStep === 3 ? T('step3Title') : currentStep === 4 ? T('step4Title') : currentStep === 5 ? T('step5Title') : T('step7Title')}
                     </span>
                   </div>
                   <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
@@ -1300,35 +1300,9 @@ const BaFitDPage: React.FC = () => {
                     )}
 
                     {/* ===== STEP 6: HOW OFTEN AND HOW ===== */}
+                    {/* ===== STEP 6: REVIEW & PLEDGE ===== */}
                     {currentStep === 6 && (
                       <motion.div key="s6" custom={direction} variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: 'easeOut' }}>
-                        <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('step6Title')}</h3>
-                        <p className="text-base text-deep-navy/60 mb-6 text-center">{T('step6Subtitle')}</p>
-                        <div className="space-y-5">
-                          <FormField label={T('frequency')}>
-                            <div className="grid grid-cols-2 gap-3">
-                              {([
-                                ['weekly', T('weekly')], ['biweekly', T('biweekly')],
-                                ['monthly', T('monthly')], ['flexible', T('flexible')],
-                              ] as const).map(([v, l]) => (
-                                <SelectionCard key={v} selected={formData.availability_frequency === v} onClick={() => updateField('availability_frequency', v as AvailabilityFrequency)} label={l} icon={<Calendar className="w-5 h-5" />} />
-                              ))}
-                            </div>
-                          </FormField>
-                          <FormField label={T('serviceMode')}>
-                            <div className="grid grid-cols-3 gap-3">
-                              {([['in_person', T('inPerson')], ['virtual', T('virtual')], ['both', T('both')]] as const).map(([v, l]) => (
-                                <SelectionCard key={v} selected={formData.service_mode === v} onClick={() => updateField('service_mode', v as ServiceMode)} label={l} />
-                              ))}
-                            </div>
-                          </FormField>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {/* ===== STEP 7: REVIEW & PLEDGE ===== */}
-                    {currentStep === 7 && (
-                      <motion.div key="s7" custom={direction} variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: 'easeOut' }}>
                         <h3 className="font-headline text-2xl font-bold text-deep-navy mb-1 text-center">{T('step7Title')}</h3>
                         <p className="text-base text-deep-navy/60 mb-6 text-center">{T('step7Subtitle')}</p>
 
@@ -1349,9 +1323,6 @@ const BaFitDPage: React.FC = () => {
                             { step: 4, title: T('step4Title'), icon: <Briefcase className="w-4 h-4" />, items: [formData.employer_support].filter(Boolean) },
                             { step: 5, title: T('step5Title'), icon: <Phone className="w-4 h-4" />, items: [
                               formData.preferred_days.join(', '), formData.preferred_contact, formData.languages_spoken.join(', '),
-                            ].filter(Boolean) },
-                            { step: 6, title: T('step6Title'), icon: <Globe className="w-4 h-4" />, items: [
-                              formData.availability_frequency, formData.service_mode,
                             ].filter(Boolean) },
                           ]).map(section => (
                             <div key={section.step} className="flex items-start gap-3 p-4 rounded-xl bg-sand-50 border border-teal/10">
