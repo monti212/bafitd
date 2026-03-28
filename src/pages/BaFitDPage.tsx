@@ -472,7 +472,7 @@ const BaFitDPage: React.FC = () => {
   };
 
   const nextLabels: Record<number, Parameters<typeof tr>[0]> = {
-    1: 'nextStep2', 2: 'nextStep3', 3: 'nextStep4', 4: 'nextStep5', 5: 'nextStep6', 6: 'nextStep7',
+    1: 'nextStep2', 2: 'nextStep3', 3: 'nextStep4', 4: 'nextStep5', 5: 'nextStep7',
   };
 
   /* ========================================================================
