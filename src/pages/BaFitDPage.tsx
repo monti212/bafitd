@@ -508,6 +508,12 @@ const BaFitDPage: React.FC = () => {
             >
               {lang === 'en' ? '🇧🇼 Setswana' : '🇬🇧 English'}
             </button>
+            <button
+              onClick={() => navigate('/card')}
+              className="px-3 py-1.5 rounded-lg bg-white/60 backdrop-blur-sm border border-teal/15 text-sm font-medium text-deep-navy hover:bg-white/80 transition-all min-h-[40px]"
+            >
+              BaFitIT Card
+            </button>
             {currentStep === 0 && (
               <motion.button
                 onClick={startRegistration}
